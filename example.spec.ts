@@ -29,7 +29,19 @@ describe("timeout examples", () => {
       const start = Date.now();
       while (Date.now() - start < 5_000) {}
       await new Promise<void>((resolve) => {
-        setTimeout(resolve, 100); // setTimeout(resolve, 0 or even 10) has no effect either
+        setImmediate(resolve); // setTimeout(resolve, 0 or even 10) has no effect either
+      });
+    },
+    150
+  );
+
+  it.concurrent(
+    "times out",
+    async () => {
+      const start = Date.now();
+      await new Promise<void>((resolve) => {
+        while (Date.now() - start < 5_000) {}
+        setImmediate(resolve);
       });
     },
     150
